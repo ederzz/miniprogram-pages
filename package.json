@@ -17,5 +17,10 @@
         "@types/node": "^12.12.8",
         "typescript": "^3.7.2"
     },
-    "types": "./lib/index.d.ts"
+    "types": "./lib/index.d.ts",
+    "dependencies": {
+        "chalk": "^3.0.0",
+        "word-table": "^1.0.3",
+        "yargs-parser": "^16.1.0"
+    }
 }
