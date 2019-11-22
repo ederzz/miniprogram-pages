@@ -1,11 +1,15 @@
 {
     "name": "miniprogram-pages",
-    "version": "1.0.3",
+    "version": "1.0.0",
     "description": "",
     "main": "index.ts",
     "bin": {
         "mpages": "./lib/index.js"
     },
+    "files": [
+        "lib/",
+        "README.md"
+    ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc"
