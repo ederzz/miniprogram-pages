@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-pages",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "",
     "main": "index.ts",
     "bin": {
@@ -13,6 +13,7 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
+    "homepage": "https://github.com/shenyiling/miniprogram-pages#readme",
     "devDependencies": {
         "@types/inquirer": "^6.5.0",
         "@types/node": "^12.12.8",

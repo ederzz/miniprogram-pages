@@ -1,30 +1,39 @@
 # miniprogram-pages
 
-## log usage of all commands
+
+## Usage
+
+```sh
+npm i miniprogram-pages -g
+```
+
+## commands
+
+### log usage of all commands
 
 ```sh
 mpages help
 ```
 
-## set template path
+### set template path
 
 ```sh
 mpages set --name=[template-name] --path=xxxx
 ```
 
-## clear template path
+### clear template path
 
 ```sh
 mpages clear --name=[template-name]
 ```
 
-## log template-path config
+### log template-path config
 
 ```sh
 mpages list
 ```
 
-## generate template
+### generate template
 
 ```sh
 mpages --name=[template-name] --target=[target-name] --f
