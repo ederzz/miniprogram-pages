@@ -11,5 +11,8 @@
             "es6"
         ],
         "strict": true
-    }
+    },
+    "include": [
+        "./types.d.ts"
+    ]
 }

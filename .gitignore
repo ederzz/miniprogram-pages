@@ -1,3 +1,4 @@
 template.json
 node_modules
 lib
+yarn-error.log

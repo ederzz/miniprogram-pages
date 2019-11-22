@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-const fs = require('fs')
-const path = require('path')
-const chalk = require('chalk')
-const WordTable = require('word-table')
-const yParser = require('yargs-parser')
-const inquirer = require('inquirer')
+import * as fs from 'fs'
+import * as path from 'path'
+import * as chalk from 'chalk'
+import * as WordTable from 'word-table'
+import * as Parser from 'yargs-parser'
+import * as inquirer from 'inquirer'
+
 const templateJsonPath = path.join(__dirname, '../template.json')
 const log = console.log
 
 const script = process.argv[2] || 'help' // help,set,clear,list,g
-const args: IArgs = yParser(process.argv.slice(3))
+const args = Parser(process.argv.slice(3)) as IArgs
 
 const commands = [
     {
