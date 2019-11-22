@@ -9,10 +9,36 @@ const inquirer = require('inquirer')
 const templateJsonPath = path.join(__dirname, '../template.json')
 const log = console.log
 
-const script = process.argv[2] || 'list' // set,clear,list,g
+const script = process.argv[2] || 'help' // help,set,clear,list,g
 const args: IArgs = yParser(process.argv.slice(3))
 
+const commands = [
+    {
+        name: 'help',
+        description: 'log usage of all commands'
+    },
+    {
+        name: 'set',
+        description: 'set template path'
+    },
+    {
+        name: 'clear',
+        description: 'clear template path'
+    },
+    {
+        name: 'g',
+        description: 'generate template'
+    },
+    {
+        name: 'list',
+        description: 'log template-path config'
+    },
+]
+
 switch (script) {
+    case 'help':
+        listHelp()
+        break
     case 'list':
         listConfig()
         break
@@ -77,6 +103,10 @@ async function generate({
 function clearPath({
     name = ''
 }: IArgs) {
+    if (!name) {
+        log(chalk.red('请指定模板名称'))
+        return
+    }
     const templateJson = getTemplateJson()
     delete templateJson[ name ]
     fs.writeFileSync(templateJsonPath, JSON.stringify(templateJson))
@@ -91,7 +121,7 @@ function listConfig() {
     const header = [ '模板名称', '模板路径' ]
     const body = Object.keys(templateJson).map(k => ([ k, templateJson[ k ] ]))
     const wt = new WordTable(header, body)
-    log(chalk.green(wt.string()))
+    log('\n' + chalk.green(wt.string()) + '\n')
 }
 
 /**
@@ -136,8 +166,9 @@ function copyTemplate(source: string, target: string) {
         } else {
             copyDir(source, target)
         }
+        log(chalk.green('复制模板成功'))
     } catch (error) {
-        log(chalk.red('创建模板失败：' + error.message))
+        log(chalk.red('复制模板失败：' + error.message))
     }
 }
 
@@ -151,6 +182,20 @@ function copyDir(source: string, target: string) {
     files.forEach((p: string) => {
         fs.copyFileSync(source + '/' + p, target + '/' + p)
     })
+}
+
+// list usage of all commands
+function listHelp() {
+    console.log(`\n  Usage: mpages <command> [options]\n`);
+    console.log(`  Commands:\n`);
+    for (const command of commands) {
+        console.log(`    ${chalk.green(padEnd(command.name, 7))}${command.description || ''}`);
+    }
+    console.log('\n')
+}
+
+function padEnd(s: string, l: number) {
+    return s + ' '.repeat(l - s.length)
 }
 
 interface IArgs {
