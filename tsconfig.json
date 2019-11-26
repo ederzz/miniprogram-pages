@@ -7,12 +7,14 @@
         "noUnusedParameters": true,
         "noUnusedLocals": true,
         "noImplicitAny": true,
+        "esModuleInterop": true,
         "lib": [
             "es6"
         ],
         "strict": true
     },
     "include": [
+        "./index.ts",
         "./types.d.ts"
     ]
 }

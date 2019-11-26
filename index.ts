@@ -3,9 +3,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as chalk from 'chalk'
-import * as WordTable from 'word-table'
-import * as Parser from 'yargs-parser'
 import * as inquirer from 'inquirer'
+import WordTable from 'word-table'
+import Parser from 'yargs-parser'
 
 const templateJsonPath = path.join(__dirname, '../template.json')
 const log = console.log
