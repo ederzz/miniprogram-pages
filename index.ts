@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import * as fs from 'fs'
-import * as path from 'path'
-import * as chalk from 'chalk'
-import * as inquirer from 'inquirer'
-import WordTable = require('word-table')
-import Parser = require('yargs-parser')
+import fs from 'fs'
+import path from 'path'
+import chalk from 'chalk'
+import inquirer from 'inquirer'
+import WordTable from 'word-table'
+import Parser from 'yargs-parser'
 
 const templateJsonPath = path.join(__dirname, '../template.json')
 const log = console.log
