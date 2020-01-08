@@ -7,7 +7,6 @@ import inquirer from 'inquirer'
 import WordTable from 'word-table'
 import Parser from 'yargs-parser'
 import home from 'user-home'
-import shx from 'shelljs'
 import ncp from 'ncp'
 
 const templatePath = path.join(home, '.mpages_tmp.json')
@@ -73,6 +72,10 @@ async function generate({
     }
     const templateJson = getTemplateJson()
     const source = templateJson[ name ]
+    if (!source || !fs.existsSync(source)) {
+        log(chalk.red('模板名称或模板路径不存在！'))
+        return
+    }
     const targetPath = target && `./${ target }` || './' + source.split('/').pop()
     if (fs.existsSync(targetPath) && !f) {
         const answers = await inquirer.prompt([
@@ -152,8 +155,7 @@ function setPath({
 
 function getTemplateJson() {
     if (!fs.existsSync(templatePath)) {
-        console.log('创建模板')
-        shx.touch(templatePath)
+        fs.writeFileSync(templatePath, '')
     }
     const templateJsonBuffer = fs.readFileSync(templatePath, {
         flag: 'a+'
@@ -190,12 +192,12 @@ function copyTemplate(source: string, target: string) {
 
 // list usage of all commands
 function listHelp() {
-    console.log(`\n  Usage: mpages <command> [options]\n`);
-    console.log(`  Commands:\n`);
+    log(`\n  Usage: mpages <command> [options]\n`);
+    log(`  Commands:\n`);
     for (const command of commands) {
-        console.log(`    ${chalk.green(padEnd(command.name, 7))}${command.description || ''}`);
+        log(`    ${chalk.green(padEnd(command.name, 7))}${command.description || ''}`);
     }
-    console.log('\n')
+    log('\n')
 }
 
 function padEnd(s: string, l: number) {

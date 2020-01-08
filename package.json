@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-pages",
-    "version": "1.1.4",
+    "version": "1.2.1",
     "description": "",
     "main": "index.ts",
     "bin": {
@@ -22,7 +22,6 @@
         "@types/inquirer": "^6.5.0",
         "@types/ncp": "^2.0.3",
         "@types/node": "^12.12.8",
-        "@types/shelljs": "^0.8.6",
         "@types/user-home": "^2.0.0",
         "@types/yargs-parser": "^13.1.0",
         "typescript": "^3.7.2"
@@ -32,7 +31,6 @@
         "chalk": "^3.0.0",
         "inquirer": "^7.0.0",
         "ncp": "^2.0.0",
-        "shelljs": "^0.8.3",
         "user-home": "^2.0.0",
         "word-table": "^1.0.3",
         "yargs-parser": "^16.1.0"
