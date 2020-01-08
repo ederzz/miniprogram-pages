@@ -6,8 +6,10 @@ import chalk from 'chalk'
 import inquirer from 'inquirer'
 import WordTable from 'word-table'
 import Parser from 'yargs-parser'
+import home from 'user-home'
+import ncp from 'ncp'
 
-const templateJsonPath = path.join(__dirname, '../template.json')
+const templatePath = path.join(home, '.mpages_tmp.json')
 const log = console.log
 
 const script = process.argv[2] || 'help' // help,set,clear,list,g
@@ -70,6 +72,10 @@ async function generate({
     }
     const templateJson = getTemplateJson()
     const source = templateJson[ name ]
+    if (!source || !fs.existsSync(source)) {
+        log(chalk.red('模板名称或模板路径不存在！'))
+        return
+    }
     const targetPath = target && `./${ target }` || './' + source.split('/').pop()
     if (fs.existsSync(targetPath) && !f) {
         const answers = await inquirer.prompt([
@@ -110,7 +116,7 @@ function clearPath({
     }
     const templateJson = getTemplateJson()
     delete templateJson[ name ]
-    fs.writeFileSync(templateJsonPath, JSON.stringify(templateJson))
+    fs.writeFileSync(templatePath, JSON.stringify(templateJson))
     log(chalk.green('清除成功'))
 }
 
@@ -143,12 +149,15 @@ function setPath({
     }
     const templateJson = getTemplateJson()
     templateJson[ name ] = path.endsWith('/') ? path.slice(0, -1) : path
-    fs.writeFileSync(templateJsonPath, JSON.stringify(templateJson))
+    fs.writeFileSync(templatePath, JSON.stringify(templateJson))
     log(chalk.green('设置成功！'))
 }
 
 function getTemplateJson() {
-    const templateJsonBuffer = fs.readFileSync(templateJsonPath, {
+    if (!fs.existsSync(templatePath)) {
+        fs.writeFileSync(templatePath, '')
+    }
+    const templateJsonBuffer = fs.readFileSync(templatePath, {
         flag: 'a+'
     })
     return templateJsonBuffer.toString() ? JSON.parse(templateJsonBuffer.toString()) : {}
@@ -160,39 +169,35 @@ function getTemplateJson() {
  * @param target target file/dir
  */
 function copyTemplate(source: string, target: string) {
-    try {
-        const stats = fs.statSync(source)
-        if (stats.isFile()) {
-            fs.copyFileSync(source, target)
+    ncp(source, target, err => {
+        if (err) {
+            log(chalk.red('复制模板失败：' + err[0].message))
         } else {
-            copyDir(source, target)
+            log(chalk.green('复制模板成功'))
         }
-        log(chalk.green('复制模板成功'))
-    } catch (error) {
-        log(chalk.red('复制模板失败：' + error.message))
-    }
-}
-
-function copyDir(source: string, target: string) {
-    try {
-        fs.mkdirSync(target)
-    } catch (error) {
-        if (!error.message.startsWith('EEXIST: file already exists')) throw error
-    }
-    const files = fs.readdirSync(source)
-    files.forEach((p: string) => {
-        fs.copyFileSync(source + '/' + p, target + '/' + p)
     })
 }
 
+// function copyDir(source: string, target: string) {
+//     try {
+//         fs.mkdirSync(target)
+//     } catch (error) {
+//         if (!error.message.startsWith('EEXIST: file already exists')) throw error
+//     }
+//     const files = fs.readdirSync(source)
+//     files.forEach((p: string) => {
+//         fs.copyFileSync(source + '/' + p, target + '/' + p)
+//     })
+// }
+
 // list usage of all commands
 function listHelp() {
-    console.log(`\n  Usage: mpages <command> [options]\n`);
-    console.log(`  Commands:\n`);
+    log(`\n  Usage: mpages <command> [options]\n`);
+    log(`  Commands:\n`);
     for (const command of commands) {
-        console.log(`    ${chalk.green(padEnd(command.name, 7))}${command.description || ''}`);
+        log(`    ${chalk.green(padEnd(command.name, 7))}${command.description || ''}`);
     }
-    console.log('\n')
+    log('\n')
 }
 
 function padEnd(s: string, l: number) {
