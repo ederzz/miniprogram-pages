@@ -76,7 +76,7 @@ async function generate({
         log(chalk.red('模板名称或模板路径不存在！'))
         return
     }
-    const targetPath = target && `./${ target }` || './' + source.split('/').pop()
+    const targetPath = target || '.' 
     if (fs.existsSync(targetPath) && !f) {
         const answers = await inquirer.prompt([
             {
